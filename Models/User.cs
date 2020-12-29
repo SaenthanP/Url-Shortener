@@ -1,14 +1,25 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc;
 
-namespace UrlShortner.Models
+namespace UrlShortener.Models
 {
     public class User
     {
         [Key]
         public int Id { get; set; }
         [Required]
+        [MinLength(3)]
+        [Remote("IsUserNameExists","UserController",ErrorMessage="Username is Taken")]  
         public string Username { get; set; }
         [Required]
+        [MinLength(8)]
         public string Password { get; set; }
+        [NotMapped]
+        [Required]
+
+        [Compare(nameof(Password),ErrorMessage="No Match")]
+        public string ConfirmPassword{get;set;}
+
     }
 }
