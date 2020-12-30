@@ -13,7 +13,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using UrlShortener.Data;
-using UrlShortener.Data;
 
 namespace UrlShortener
 {

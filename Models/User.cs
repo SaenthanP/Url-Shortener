@@ -10,7 +10,7 @@ namespace UrlShortener.Models
         public int Id { get; set; }
         [Required]
         [MinLength(3)]
-        [Remote("IsUserNameExists","UserController",ErrorMessage="Username is Taken")]  
+        // [MyValidator(ErrorMessage = "Username is taken")]
         public string Username { get; set; }
         [Required]
         [MinLength(8)]

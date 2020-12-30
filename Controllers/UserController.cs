@@ -2,6 +2,10 @@ using System;
 using Microsoft.AspNetCore.Mvc;
 using UrlShortener.Models;
 using UrlShortener.Data;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Net;
+
 namespace UrlShortener.Controllers
 {
 
@@ -31,20 +35,34 @@ namespace UrlShortener.Controllers
         
     [HttpPost]
     public ActionResult<User>CreateUser(User user){
+       
+            if(_repository.IsTaken(user.Username)){
+         ModelState.AddModelError("Username", "Username Name Already Exists.");
+        
+         return BadRequest(ModelState.Values);
+            }
+       
 
+        
         _repository.CreateUser(user);
         _repository.SaveChanges();
     
+    
         return CreatedAtRoute(nameof(GetUserById),new {id=user.Id},user);
-    }
-   
 
+    }
+    //This route is only for testing purposes
+   [HttpDelete]
+     public ActionResult DeleteUsers(){
+         
 
-    public bool IsUserNameExists(string Username){
-        Console.WriteLine("reach");
-        return _repository.IsTaken(Username);
+            _repository.DeleteUsers();
+            _repository.SaveChanges();
+            return NoContent();
+        }
+    
     }
-    }
+  
 
 
 }

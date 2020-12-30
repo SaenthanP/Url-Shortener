@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UrlShortener.Models;
 namespace UrlShortener.Data
 {
@@ -8,7 +9,6 @@ namespace UrlShortener.Data
         User GetUserById(int id);
         void CreateUser(User user);
         bool IsTaken(string username);
-        
-
+        void DeleteUsers();
     }
 }
