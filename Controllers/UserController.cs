@@ -23,7 +23,7 @@ namespace UrlShortener.Controllers
             _repository = repo;
         }
         [HttpGet("{id}", Name = "GetUserById")]
-        public ActionResult<User> GetUserById(int id)
+        public ActionResult<User> GetUserById(string id)
         {
             var userItem = _repository.GetUserById(id);
             if (userItem == null)
@@ -43,7 +43,14 @@ namespace UrlShortener.Controllers
             }
        
 
-        
+
+        string id=Guid.NewGuid().ToString();
+        //extra check to ensure a duplicate Id is not generated
+        while(_repository.GetUserById(id)!=null){
+            id=Guid.NewGuid().ToString();
+        }
+        user.Id=id;
+
         _repository.CreateUser(user);
         _repository.SaveChanges();
     

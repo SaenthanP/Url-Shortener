@@ -44,6 +44,11 @@ namespace UrlShortener
                 app.UseDeveloperExceptionPage();
                
             }
+          //enabling cors
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
 
             app.UseHttpsRedirection();
 

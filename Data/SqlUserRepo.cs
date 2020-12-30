@@ -57,7 +57,7 @@ namespace UrlShortener.Data
             _context.Add(user);
         }
 
-        User IUserRepo.GetUserById(int id)
+        User IUserRepo.GetUserById(string id)
         {
             return _context.User.FirstOrDefault(p=>p.Id==id);
         }

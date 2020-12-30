@@ -1,11 +1,11 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Mvc;
 
 namespace UrlShortener.Models
 {
-    public class User
-    {
+    public class Link{
+    
         public string Id { get; set; }
         [Required]
         [MinLength(3)]
@@ -19,6 +19,12 @@ namespace UrlShortener.Models
 
         [Compare(nameof(Password),ErrorMessage="No Match")]
         public string ConfirmPassword{get;set;}
+  //may change to inlcude time as well      
+[DataType(DataType.Date)]
+[DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
+        public DateTime ExpiryDate{get;set;}
+
+
 
     }
 }

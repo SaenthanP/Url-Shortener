@@ -6,7 +6,7 @@ namespace UrlShortener.Data
     {
 
         bool SaveChanges();
-        User GetUserById(int id);
+        User GetUserById(string id);
         void CreateUser(User user);
         bool IsTaken(string username);
         void DeleteUsers();
