@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
+using UrlShortener.Dtos;
 
 namespace UrlShortener.Controllers
 {
@@ -81,7 +82,6 @@ namespace UrlShortener.Controllers
         [HttpPost("authenticate")]
         public ActionResult<User> Login(UserReadDto user)
         {
-            // var user = _mapper.Map<User>(userReadDto);
             if (_repository.IsExists(user.Username))
             {
                 var userToCheck = _repository.GetUserByUsername(user.Username);
@@ -110,7 +110,6 @@ namespace UrlShortener.Controllers
                     };
 
 
-                    //                 //   var returnModel = _mapper.Map<UserReadDto>(userModel);
                     return Ok(output);
                 }
             }

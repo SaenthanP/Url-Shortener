@@ -4,12 +4,10 @@ using UrlShortener.Dtos;
 
 namespace UrlShortener.Profiles
 {
-    public class UsersProfile:Profile
+    public class LinksProfile:Profile
     {
-            public UsersProfile(){
-               
-
-
+            public LinksProfile(){
+             
                 CreateMap<Link,LinkCreateDto>();
                 CreateMap<LinkCreateDto,Link>();
 

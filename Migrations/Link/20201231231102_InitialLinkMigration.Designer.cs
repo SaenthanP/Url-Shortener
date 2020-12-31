@@ -10,7 +10,7 @@ using UrlShortener.Data;
 namespace UrlShortener.Migrations.Link
 {
     [DbContext(typeof(LinkContext))]
-    [Migration("20201231005104_InitialLinkMigration")]
+    [Migration("20201231231102_InitialLinkMigration")]
     partial class InitialLinkMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,8 +29,11 @@ namespace UrlShortener.Migrations.Link
                     b.Property<DateTime>("ExpiryDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Url")
+                    b.Property<string>("LongUrl")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ShortUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")

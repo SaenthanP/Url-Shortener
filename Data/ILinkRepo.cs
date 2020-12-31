@@ -7,8 +7,8 @@ namespace UrlShortener.Data
         
         bool SaveChanges();
         Link GetLinkById(string id);
-        void Create(Link link);
+        void CreateLink(Link link);
         void DeleteLinks();
-        
+
     }
 }

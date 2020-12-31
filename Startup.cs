@@ -69,6 +69,7 @@ namespace UrlShortener
             services.AddControllers();
 
             services.AddScoped<IUserRepo, SqlUserRepo>();
+            services.AddScoped<ILinkRepo, SqlLinkRepo>();
 
 
         }

@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace UrlShortener
+namespace UrlShortener.Dtos
+
 {
     public class UserReadDto
     {

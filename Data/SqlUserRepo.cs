@@ -61,7 +61,7 @@ namespace UrlShortener.Data
             return (_context.SaveChanges()>=0);
         }
 
-        void IUserRepo.CreateUser(User user)
+    public void CreateUser(User user)
         {
 
             if(user==null){
@@ -71,7 +71,7 @@ namespace UrlShortener.Data
             _context.Add(user);
         }
 
-        User IUserRepo.GetUserById(string id)
+       public  User GetUserById(string id)
         {
             return _context.User.FirstOrDefault(p=>p.Id==id);
         }
