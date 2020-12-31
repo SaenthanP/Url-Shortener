@@ -26,9 +26,23 @@ namespace UrlShortener.Data
 
         }
 
-       
+        public User GetUserByUsername(string username)
+        {
+            
+                return _context.User.FirstOrDefault(p=>p.Username==username);
 
-        public bool IsTaken(string username)
+            // var user=_context.User.FirstOrDefault(p=>p.Username==username);
+        
+            // if(user!=null){
+            //         Console.WriteLine(username);
+            //     return null;
+            // }
+            //         Console.WriteLine("not null");
+
+            // return user;
+        }
+
+        public bool IsExists(string username)
         { 
 
 

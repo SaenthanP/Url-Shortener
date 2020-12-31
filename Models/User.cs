@@ -14,11 +14,11 @@ namespace UrlShortener.Models
         [Required]
         [MinLength(8)]
         public string Password { get; set; }
-        [NotMapped]
-        [Required]
+        // [NotMapped]
+        // [Required]
 
-        [Compare(nameof(Password),ErrorMessage="No Match")]
-        public string ConfirmPassword{get;set;}
+        // [Compare(nameof(Password),ErrorMessage="No Match")]
+        // public string ConfirmPassword{get;set;}
 
     }
 }

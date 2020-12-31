@@ -2,7 +2,7 @@
 
 namespace UrlShortener.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class InitialUserMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
