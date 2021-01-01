@@ -4,7 +4,9 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using shortid;
+using shortid.Configuration;
 using UrlShortener.Data;
 using UrlShortener.Dtos;
 using UrlShortener.Models;
@@ -14,21 +16,23 @@ namespace UrlShortener.Controllers
     [ApiController]
     public class LinkController : ControllerBase
     {
+        private readonly IConfiguration _config;
 
         private readonly ILinkRepo _repository;
         private readonly IMapper _mapper;
-        public LinkController(ILinkRepo repo, IMapper mapper)
+        public LinkController(ILinkRepo repo, IMapper mapper,IConfiguration configuration)
         {
             _repository = repo;
             _mapper = mapper;
+            _config=configuration;
         }
-            [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [Route("api/authorized/links")]
-
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+         [Route("api/authorized/links")]
         [HttpPost]
         public ActionResult<Link> CreateLink(LinkCreateDto linkCreateDto)
         {
             var linkModel = _mapper.Map<Link>(linkCreateDto);
+            Console.WriteLine(linkModel.ExpiryDate);
             string id = Guid.NewGuid().ToString();
             //extra check to ensure a duplicate Id is not generated
             while (_repository.GetLinkById(id) != null)
@@ -39,13 +43,19 @@ namespace UrlShortener.Controllers
        
 
             linkModel.UserId=User.Identity.Name;
-            string shortId=ShortId.Generate();
+        var options=new GenerationOptions{
+            UseNumbers=true,
+            Length=8,
+            UseSpecialCharacters = false
+
+        };
+            string shortId=ShortId.Generate(options);
                while (_repository.GetLinkByUrlCode(shortId) != null)
             {
-               shortId=ShortId.Generate();
+               shortId=ShortId.Generate(options);
             }
             linkModel.UrlCode=shortId;
-            linkModel.ShortUrl = "www.sample-url.com";
+            linkModel.ShortUrl = _config.GetSection("BaseUrl").Value+linkModel.UrlCode;
             _repository.CreateLink(linkModel);
             _repository.SaveChanges();
 
@@ -55,11 +65,11 @@ namespace UrlShortener.Controllers
             return CreatedAtRoute(nameof(GetLinkById), new { id = linkModel.Id }, returnModel);
 
         }
-            [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [Route("api/authorized/links")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Route("api/authorized/links/{id}",Name = "GetLinkById")]
 
-        [HttpGet("{id}", Name = "GetLinkById")]
-        public ActionResult<LinkReadDto> GetLinkById(string id)
+        [HttpGet]
+        public ActionResult<LinkReadDto> GetLinkById([FromRoute]string id)
         {
             var linkItem = _repository.GetLinkById(id);
             if (linkItem != null)
@@ -68,12 +78,33 @@ namespace UrlShortener.Controllers
             }
         return NotFound();
         }
-        [Route("")]
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Route("api/authorized/links/{id}")]
+        [HttpDelete]
+        public ActionResult DeleteLink(Guid id)
+        {
+           
+            var linkItem = _repository.GetLinkById(id.ToString());
+            if (linkItem == null)
+            {
+                return NotFound();
+            }else if(linkItem.UserId!=User.Identity.Name){
+                return Unauthorized("You did not create this link");
+            }
+     
+    _repository.DeleteLink(linkItem);
+    _repository.SaveChanges();
+    return NoContent();
+
+        }   
+
+
+
+        [Route("")]
         [HttpGet("redirect/{urlCode}")]
         public ActionResult<Link>redirect(string urlCode){
-// https://localhost:5001/redirect/23432
-            return Redirect("http://www.google.com");
+            return Redirect(_repository.GetLinkByUrlCode(urlCode).LongUrl);
         }
     }
 }

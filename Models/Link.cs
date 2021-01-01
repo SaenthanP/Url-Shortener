@@ -15,8 +15,8 @@ namespace UrlShortener.Models
         public string LongUrl{get;set;}
 
         //may change to inlcude time as well      
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
+[DataType(DataType.Date)]
+ [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime ExpiryDate { get; set; }
     }
 }

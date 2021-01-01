@@ -27,9 +27,14 @@ namespace UrlShortener.Data
 
 
 
-        public void DeleteLinks()
+        public void DeleteLink(Link link)
         {
-            throw new System.NotImplementedException();
+            if(link==null){
+                throw new ArgumentException(nameof(link));
+
+            }
+            _context.Link.Remove(link);
+
         }
 
         public Link GetLinkById(string id)

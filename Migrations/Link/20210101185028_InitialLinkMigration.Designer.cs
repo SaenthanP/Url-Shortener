@@ -10,7 +10,7 @@ using UrlShortener.Data;
 namespace UrlShortener.Migrations.Link
 {
     [DbContext(typeof(LinkContext))]
-    [Migration("20201231234421_InitialLinkMigration")]
+    [Migration("20210101185028_InitialLinkMigration")]
     partial class InitialLinkMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
