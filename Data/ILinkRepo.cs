@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UrlShortener.Models;
 
 namespace UrlShortener.Data
@@ -10,6 +11,6 @@ namespace UrlShortener.Data
         void CreateLink(Link link);
         void DeleteLink(Link link);
         Link GetLinkByUrlCode(string urlCode);
-
+        IEnumerable<Link>GetAllLinks(string userId);
     }
 }

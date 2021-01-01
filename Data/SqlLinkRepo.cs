@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using UrlShortener.Dtos;
@@ -34,6 +35,26 @@ namespace UrlShortener.Data
 
             }
             _context.Link.Remove(link);
+
+        }
+
+        public IEnumerable<Link> GetAllLinks(string userId)
+        {
+
+//             IEnumerable<Link>links=new List<Link>();
+
+// for(int index=0;index<_context.Link.ToList().Count();index++){
+
+// if(_context.Link.ToList().ElementAt(index).UserId==userId){
+
+//     links.Append(_context.Link.ToList().ElementAt(index));
+//     // links.Add(_context.Link.ElementAt(index));
+// }
+// }
+// Console.WriteLine(userId);
+
+// var linkItems=_context.Link.Where(x=>x.UserId==userId).ToList();
+return _context.Link.Where(x=>x.UserId==userId).ToList();
 
         }
 

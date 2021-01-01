@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -77,6 +78,18 @@ namespace UrlShortener.Controllers
                 return Ok(_mapper.Map<LinkReadDto>(linkItem));
             }
         return NotFound();
+        }
+         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Route("api/authorized/links/all")]
+
+        [HttpGet]
+        public ActionResult<LinkReadDto> GetAllLinks()
+        {
+            var linkItems = _repository.GetAllLinks(User.Identity.Name);
+          
+                return Ok(_mapper.Map<IEnumerable<LinkReadDto>>(linkItems));
+            
+        
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
