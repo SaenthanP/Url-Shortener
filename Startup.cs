@@ -90,6 +90,8 @@ namespace UrlShortener
 
             app.UseHttpsRedirection();
 
+            app.UseHangfireDashboard();
+
             app.UseRouting();
 
             app.UseAuthorization();

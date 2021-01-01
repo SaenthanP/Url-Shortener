@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using AutoMapper;
+using Hangfire;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -57,12 +58,13 @@ namespace UrlShortener.Controllers
             }
             linkModel.UrlCode=shortId;
             linkModel.ShortUrl = _config.GetSection("BaseUrl").Value+linkModel.UrlCode;
+            var jobId=BackgroundJob.Schedule(()=>_repository.HangfireDeleteLink(_repository.GetLinkById(linkModel.Id)),TimeSpan.FromSeconds(40));
+            linkModel.JobId=jobId;
             _repository.CreateLink(linkModel);
             _repository.SaveChanges();
 
             var returnModel = _mapper.Map<LinkReadDto>(linkModel);
-
-
+            
             return CreatedAtRoute(nameof(GetLinkById), new { id = linkModel.Id }, returnModel);
 
         }
@@ -97,6 +99,7 @@ namespace UrlShortener.Controllers
         [HttpDelete]
         public ActionResult DeleteLink(Guid id)
         {
+            //Add to check to delete a job for hangfire
            
             var linkItem = _repository.GetLinkById(id.ToString());
             if (linkItem == null)
@@ -105,13 +108,14 @@ namespace UrlShortener.Controllers
             }else if(linkItem.UserId!=User.Identity.Name){
                 return Unauthorized("You did not create this link");
             }
-     
+ BackgroundJob.Delete(linkItem.JobId);
     _repository.DeleteLink(linkItem);
     _repository.SaveChanges();
+
     return NoContent();
 
         }   
-
+        
 
 
         [Route("")]

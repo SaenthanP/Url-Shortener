@@ -12,7 +12,7 @@ public class LinkCreateDto
         public string LongUrl{get;set;}
 
         //may change to inlcude time as well      
-       [DataType(DataType.DateTime)]
+        [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}")]
         public DateTime ExpiryDate { get; set; }
 }

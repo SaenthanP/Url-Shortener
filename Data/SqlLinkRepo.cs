@@ -34,6 +34,7 @@ namespace UrlShortener.Data
                 throw new ArgumentException(nameof(link));
 
             }
+            Console.WriteLine(link.Id);
             _context.Link.Remove(link);
 
         }
@@ -66,6 +67,17 @@ return _context.Link.Where(x=>x.UserId==userId).ToList();
         public Link GetLinkByUrlCode(string urlCode)
         {
             return _context.Link.FirstOrDefault(p => p.UrlCode == urlCode);
+        }
+
+        public void HangfireDeleteLink(Link link)
+        {
+            if(link==null){
+                throw new ArgumentException(nameof(link));
+
+            }
+            Console.WriteLine(link.Id);
+            _context.Link.Remove(link);
+            SaveChanges();
         }
 
         public bool SaveChanges()

@@ -11,6 +11,7 @@ namespace UrlShortener.Models
         public string UserId{get;set;}
         public string UrlCode{get;set;}
         public string ShortUrl{get;set;}
+        public string JobId{get;set;}
         [Required]
         public string LongUrl{get;set;}
 

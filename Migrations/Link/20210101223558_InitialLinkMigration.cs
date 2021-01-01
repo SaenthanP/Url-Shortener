@@ -15,6 +15,7 @@ namespace UrlShortener.Migrations.Link
                     UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UrlCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ShortUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    JobId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LongUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ExpiryDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },

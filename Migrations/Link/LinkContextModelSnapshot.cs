@@ -27,6 +27,9 @@ namespace UrlShortener.Migrations.Link
                     b.Property<DateTime>("ExpiryDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("JobId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("LongUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
