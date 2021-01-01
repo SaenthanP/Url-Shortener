@@ -34,6 +34,9 @@ namespace UrlShortener.Migrations.Link
                     b.Property<string>("ShortUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UrlCode")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
 

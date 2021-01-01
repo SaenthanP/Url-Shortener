@@ -7,15 +7,11 @@ namespace UrlShortener.Profiles
     public class UsersProfile:Profile
     {
             public UsersProfile(){
-               
+                CreateMap<User,UserCreateDto>();
+                CreateMap<UserCreateDto,User>();
+                CreateMap<UserReadDto,User>();
+                CreateMap<User,UserReadDto>();
 
-
-                CreateMap<Link,LinkCreateDto>();
-                CreateMap<LinkCreateDto,Link>();
-
-
-                CreateMap<LinkReadDto,Link>();
-        CreateMap<Link,LinkReadDto>();
 
 
 

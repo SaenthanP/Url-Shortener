@@ -9,6 +9,7 @@ namespace UrlShortener.Data
         Link GetLinkById(string id);
         void CreateLink(Link link);
         void DeleteLinks();
+        Link GetLinkByUrlCode(string urlCode);
 
     }
 }

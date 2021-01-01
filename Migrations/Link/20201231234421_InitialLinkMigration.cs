@@ -13,6 +13,7 @@ namespace UrlShortener.Migrations.Link
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UrlCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ShortUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LongUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ExpiryDate = table.Column<DateTime>(type: "datetime2", nullable: false)

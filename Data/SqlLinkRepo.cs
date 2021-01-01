@@ -37,6 +37,11 @@ namespace UrlShortener.Data
             return _context.Link.FirstOrDefault(p => p.Id == id);
         }
 
+        public Link GetLinkByUrlCode(string urlCode)
+        {
+            return _context.Link.FirstOrDefault(p => p.UrlCode == urlCode);
+        }
+
         public bool SaveChanges()
         {
             return (_context.SaveChanges() >= 0);

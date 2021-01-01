@@ -4,6 +4,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using shortid;
 using UrlShortener.Data;
 using UrlShortener.Dtos;
 using UrlShortener.Models;
@@ -11,8 +12,6 @@ using UrlShortener.Models;
 namespace UrlShortener.Controllers
 {
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [Route("api/authorized/links")]
     public class LinkController : ControllerBase
     {
 
@@ -23,6 +22,9 @@ namespace UrlShortener.Controllers
             _repository = repo;
             _mapper = mapper;
         }
+            [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Route("api/authorized/links")]
+
         [HttpPost]
         public ActionResult<Link> CreateLink(LinkCreateDto linkCreateDto)
         {
@@ -36,7 +38,13 @@ namespace UrlShortener.Controllers
             linkModel.Id = id;
        
 
-      linkModel.UserId=User.Identity.Name;
+            linkModel.UserId=User.Identity.Name;
+            string shortId=ShortId.Generate();
+               while (_repository.GetLinkByUrlCode(shortId) != null)
+            {
+               shortId=ShortId.Generate();
+            }
+            linkModel.UrlCode=shortId;
             linkModel.ShortUrl = "www.sample-url.com";
             _repository.CreateLink(linkModel);
             _repository.SaveChanges();
@@ -47,6 +55,9 @@ namespace UrlShortener.Controllers
             return CreatedAtRoute(nameof(GetLinkById), new { id = linkModel.Id }, returnModel);
 
         }
+            [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Route("api/authorized/links")]
+
         [HttpGet("{id}", Name = "GetLinkById")]
         public ActionResult<LinkReadDto> GetLinkById(string id)
         {
@@ -56,6 +67,13 @@ namespace UrlShortener.Controllers
                 return Ok(_mapper.Map<LinkReadDto>(linkItem));
             }
         return NotFound();
+        }
+        [Route("")]
+
+        [HttpGet("redirect/{urlCode}")]
+        public ActionResult<Link>redirect(string urlCode){
+// https://localhost:5001/redirect/23432
+            return Redirect("http://www.google.com");
         }
     }
 }
