@@ -42,19 +42,6 @@ namespace UrlShortener.Data
         public IEnumerable<Link> GetAllLinks(string userId)
         {
 
-//             IEnumerable<Link>links=new List<Link>();
-
-// for(int index=0;index<_context.Link.ToList().Count();index++){
-
-// if(_context.Link.ToList().ElementAt(index).UserId==userId){
-
-//     links.Append(_context.Link.ToList().ElementAt(index));
-//     // links.Add(_context.Link.ElementAt(index));
-// }
-// }
-// Console.WriteLine(userId);
-
-// var linkItems=_context.Link.Where(x=>x.UserId==userId).ToList();
 return _context.Link.Where(x=>x.UserId==userId).ToList();
 
         }
@@ -69,13 +56,13 @@ return _context.Link.Where(x=>x.UserId==userId).ToList();
             return _context.Link.FirstOrDefault(p => p.UrlCode == urlCode);
         }
 
-        public void HangfireDeleteLink(Link link)
+        public void HangfireDeleteLink(string id)
         {
+            Link link=GetLinkById(id);
             if(link==null){
                 throw new ArgumentException(nameof(link));
 
             }
-            Console.WriteLine(link.Id);
             _context.Link.Remove(link);
             SaveChanges();
         }

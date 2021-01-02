@@ -34,7 +34,6 @@ namespace UrlShortener.Controllers
         public ActionResult<Link> CreateLink(LinkCreateDto linkCreateDto)
         {
             var linkModel = _mapper.Map<Link>(linkCreateDto);
-            Console.WriteLine(linkModel.ExpiryDate);
             string id = Guid.NewGuid().ToString();
             //extra check to ensure a duplicate Id is not generated
             while (_repository.GetLinkById(id) != null)
@@ -58,8 +57,10 @@ namespace UrlShortener.Controllers
             }
             linkModel.UrlCode=shortId;
             linkModel.ShortUrl = _config.GetSection("BaseUrl").Value+linkModel.UrlCode;
-            var jobId=BackgroundJob.Schedule(()=>_repository.HangfireDeleteLink(_repository.GetLinkById(linkModel.Id)),TimeSpan.FromSeconds(40));
-            linkModel.JobId=jobId;
+    var jobId= BackgroundJob.Schedule(()=>_repository.HangfireDeleteLink(linkModel.Id),linkModel.ExpiryDate);
+
+           linkModel.JobId=jobId;
+
             _repository.CreateLink(linkModel);
             _repository.SaveChanges();
 

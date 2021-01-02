@@ -13,7 +13,7 @@ public class LinkCreateDto
 
         //may change to inlcude time as well      
         [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm tt}")]
         public DateTime ExpiryDate { get; set; }
 }
 }

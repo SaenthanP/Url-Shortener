@@ -10,7 +10,7 @@ namespace UrlShortener.Data
         Link GetLinkById(string id);
         void CreateLink(Link link);
         void DeleteLink(Link link);
-        void HangfireDeleteLink(Link link);
+        void HangfireDeleteLink(string id);
 
         Link GetLinkByUrlCode(string urlCode);
         IEnumerable<Link>GetAllLinks(string userId);
