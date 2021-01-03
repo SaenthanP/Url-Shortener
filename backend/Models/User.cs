@@ -7,11 +7,11 @@ namespace UrlShortener.Models
     public class User
     {
         public string Id { get; set; }
-        [Required]
+        [Required(ErrorMessage="Enter Username")]
         [MinLength(3)]
         // [MyValidator(ErrorMessage = "Username is taken")]
         public string Username { get; set; }
-        [Required]
+        [Required(ErrorMessage="Enter Password")]
         [MinLength(8)]
         public string Password { get; set; }
         // [NotMapped]

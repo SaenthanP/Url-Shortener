@@ -46,8 +46,14 @@ namespace UrlShortener.Controllers
         [HttpPost]
         public ActionResult<User> CreateUser(UserCreateDto userCreateDto)
         {
-            var userModel = _mapper.Map<User>(userCreateDto);
+            if(userCreateDto.Username==null||userCreateDto.Password==null||userCreateDto.ConfirmPassword==null){
+                    ModelState.AddModelError("Empty entry", "Please enter all entries");
 
+                return BadRequest(ModelState.Values);
+            }
+
+            var userModel = _mapper.Map<User>(userCreateDto);
+            
 
             if (_repository.IsExists(userModel.Username))
             {
@@ -56,7 +62,11 @@ namespace UrlShortener.Controllers
                 return BadRequest(ModelState.Values);
             }
 
+        if(userCreateDto.Password!=userCreateDto.ConfirmPassword){
+             ModelState.AddModelError("Password", "Passwords do not match");
 
+                return BadRequest(ModelState.Values);
+        }
 
             string id = Guid.NewGuid().ToString();
             //extra check to ensure a duplicate Id is not generated
@@ -82,6 +92,11 @@ namespace UrlShortener.Controllers
         [HttpPost("authenticate")]
         public ActionResult<User> Login(UserReadDto user)
         {
+            if(user.Username==null||user.Password==null){
+                ModelState.AddModelError("Empty entry", "Please enter all entries");
+                            return Unauthorized(ModelState.Values);
+
+            }
             if (_repository.IsExists(user.Username))
             {
                 var userToCheck = _repository.GetUserByUsername(user.Username);
@@ -105,7 +120,7 @@ namespace UrlShortener.Controllers
 
                     var output = new
                     {
-                        Token = "Bearer " + tokenHandler.WriteToken(token),
+                        Token = tokenHandler.WriteToken(token),
                         User = user.Username
                     };
 
