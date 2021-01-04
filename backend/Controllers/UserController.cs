@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
 using UrlShortener.Dtos;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace UrlShortener.Controllers
 {
@@ -131,6 +132,15 @@ namespace UrlShortener.Controllers
 
             ModelState.AddModelError("Invalid Login", "Username or Password entered Incorrectly");
             return Unauthorized(ModelState.Values);
+        }
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpGet("isAuthenticated")]
+        public ActionResult <bool> isAuthenticated(){
+            if(User.Identity.IsAuthenticated){
+                return true;
+            }
+          return false;
         }
         [HttpDelete]
         public ActionResult DeleteUsers()

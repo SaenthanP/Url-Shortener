@@ -2,16 +2,39 @@ import { Container, Col, Row, Form, Card, Button } from 'react-bootstrap';
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import ErrorModal from './error-modal.component';
+import Cookies from 'js-cookie';
+import './styles/auth.css';
+import { useHistory } from "react-router-dom";
 
-import './styles/auth.css'
 export default function Login() {
+    const history = useHistory();
+
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
     const [error, setError] = useState();
     const [modalShow, setModalShow] = useState(false);
 
+useEffect(()=>{
+    const checkAuth=async()=>{
+        await Axios({
+          method:'get',
+          url:'http://localhost:5000/api/users/isAuthenticated',
+          headers: {
+            'Authorization': "Bearer "+sessionStorage.getItem('jwt'),
+        }
+      }).then(res=>{
+       if(res.data){
+        window.location="/create-link";
+  
+       } 
+      }).catch(err=>{
+        sessionStorage.clear();
 
-
+    });
+  
+      }
+  checkAuth();
+},[]);
 
     const onSubmit = async (e) => {
         try {
@@ -21,9 +44,10 @@ export default function Login() {
                 password
             }
             const userRes = await Axios.post("http://localhost:5000/api/users/authenticate", user);
-
+        sessionStorage.setItem('jwt',userRes.data.token);
+       
+        window.location="/create-link";
         } catch (err) {
-            console.log(err.response);
                 setError(err.response.data[0].errors[0].errorMessage);
 
             setModalShow(true);
@@ -35,7 +59,7 @@ export default function Login() {
 
         <Container>
             <Row>
-                <Col xs={12}>
+                <Col xs={6} md={12}>
                 </Col>
                 <Card className="auth-card">
                     <ErrorModal

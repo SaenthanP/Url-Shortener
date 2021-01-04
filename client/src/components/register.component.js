@@ -12,6 +12,27 @@ export default function Register() {
     const [modalShow, setModalShow] = useState(false);
 
 
+    useEffect(()=>{
+        const checkAuth=async()=>{
+            await Axios({
+              method:'get',
+              url:'http://localhost:5000/api/users/isAuthenticated',
+              headers: {
+                'Authorization': "Bearer "+sessionStorage.getItem('jwt'),
+            }
+          }).then(res=>{
+           if(res.data){
+            window.location="/create-link";
+      
+           } 
+          }).catch(err=>{
+            sessionStorage.clear();
+    
+        });
+      
+          }
+      checkAuth();
+    },[]);
 
 
     const onSubmit = async (e) => {
@@ -23,7 +44,7 @@ export default function Register() {
                 confirmPassword
             }
             const userRes = await Axios.post("http://localhost:5000/api/users", user);
-
+            window.location="/login";
         } catch (err) {
         // console.log(err.response.data[0].errors[0].errorMessage);
                 setError(err.response.data[0].errors[0].errorMessage);
